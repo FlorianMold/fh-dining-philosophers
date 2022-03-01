@@ -4,6 +4,7 @@ import at.fh.domain.Fork;
 import at.fh.domain.Philosopher;
 import at.fh.util.PhilosophersConfiguration;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -14,8 +15,7 @@ public class Main {
 
         // There are as many forks as philosophers.
         var forks = createForks(config.getPhilosophersAmount());
-        var philosophers = createPhilosophers(config);
-
+        var philosophers = createPhilosophers(config, forks);
     }
 
     /**
@@ -37,15 +37,22 @@ public class Main {
      * Generates as many philosophers as specified in the PhilosophersConfiguration.
      * The philosophers get their thinking-time and eating-time from the PhilosophersConfiguration.
      *
-     * @param conf The configuration-object needed for creating objects.
+     * @param conf  The configuration-object needed for creating objects.
+     * @param forks Array of forks for the philosophers.
      * @return An array of newly created philosophers with the length of the PhilosophersConfiguration.
      */
-    private static Philosopher[] createPhilosophers(final PhilosophersConfiguration conf) {
+    private static Philosopher[] createPhilosophers(final PhilosophersConfiguration conf, final Fork[] forks) {
         var philosophersAmount = conf.getPhilosophersAmount();
         var philosophers = new Philosopher[philosophersAmount];
 
         for (int i = 0; i < philosophersAmount; i++) {
-            philosophers[i] = new Philosopher(i, conf.getEatingTime(), conf.getThinkingTime());
+            philosophers[i] = new Philosopher(
+                    i,
+                    conf.getEatingTime(),
+                    conf.getThinkingTime(),
+                    forks[i],
+                    forks[(i + 1) % philosophersAmount]
+            );
         }
 
         return philosophers;

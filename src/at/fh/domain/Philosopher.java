@@ -8,10 +8,12 @@ public class Philosopher implements Runnable {
     private final Fork leftFork;
     private final Fork rightFork;
 
-    public Philosopher(int id, int eatingTime, int thinkingTime) {
+    public Philosopher(int id, int eatingTime, int thinkingTime, Fork leftFork, Fork rightFork) {
         this.id = id;
         this.eatingTime = eatingTime;
         this.thinkingTime = thinkingTime;
+        this.leftFork = leftFork;
+        this.rightFork = rightFork;
     }
 
     public int getId() {
@@ -37,6 +39,8 @@ public class Philosopher implements Runnable {
                 "id=" + id +
                 ", eatingTime=" + eatingTime +
                 ", thinkingTime=" + thinkingTime +
+                ", leftFork=" + leftFork +
+                ", rightFork=" + rightFork +
                 '}';
     }
 }
