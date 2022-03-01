@@ -1,9 +1,12 @@
 package at.fh.domain;
 
-public class Philosopher {
+public class Philosopher implements Runnable {
     private final int id;
     private final int eatingTime;
     private final int thinkingTime;
+
+    private final Fork leftFork;
+    private final Fork rightFork;
 
     public Philosopher(int id, int eatingTime, int thinkingTime) {
         this.id = id;
@@ -21,6 +24,11 @@ public class Philosopher {
 
     public int getThinkingTime() {
         return thinkingTime;
+    }
+
+    @Override
+    public void run() {
+        System.out.println("Philosopher " + this.id + " started running!");
     }
 
     @Override
