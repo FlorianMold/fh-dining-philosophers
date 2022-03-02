@@ -13,6 +13,6 @@ public interface NumberGenerator {
      */
     static int generateNumber(int min, int max) {
         Random rng = new Random();
-        return rng.nextInt(min, max + 1);
+        return rng.nextInt(max - min) + min;
     }
 }

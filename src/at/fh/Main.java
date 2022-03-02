@@ -4,7 +4,6 @@ import at.fh.domain.Fork;
 import at.fh.domain.Philosopher;
 import at.fh.util.PhilosophersConfiguration;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -16,6 +15,24 @@ public class Main {
         // There are as many forks as philosophers.
         var forks = createForks(config.getPhilosophersAmount());
         var philosophers = createPhilosophers(config, forks);
+
+        var threads = new Thread[philosophers.length];
+
+        // Start our philosophers
+        for (int i = 0; i < philosophers.length; i++) {
+            threads[i] = new Thread(philosophers[i], philosophers[i].getName());
+            threads[i].start();
+        }
+
+        System.out.println("Press any key to continue . . . ");
+
+        var scan = new Scanner(System.in);
+        scan.nextLine();
+
+        for (var p : philosophers) {
+            p.stopRunning();
+        }
+
     }
 
     /**
@@ -64,7 +81,7 @@ public class Main {
      * @return A PhilosophersConfiguration with the read properties.
      */
     private static PhilosophersConfiguration readCommandLineInput() {
-        Scanner scanner = new Scanner(System.in);
+        var scanner = new Scanner(System.in);
 
         System.out.println("Please enter the amount of philosophers:");
         final int philosophersAmount = scanner.nextInt();
