@@ -28,14 +28,19 @@ public class Philosopher implements Runnable {
     public void run() {
         System.out.println(this.getName() + " started running!");
 
+        var forkOrder = this.isEven() ?
+                new Fork[]{this.rightFork, this.leftFork} : new Fork[]{this.leftFork, this.rightFork};
+        var takeOrder = this.isEven() ?
+                new String[]{"right", "left"} : new String[]{"left", "right"};
+
         while (this.isRunning) {
             try {
                 this.think();
-                synchronized (this.leftFork) {
-                    this.takeLeftFork(this.leftFork);
+                synchronized (forkOrder[0]) {
+                    this.takeFork(forkOrder[0], takeOrder[0]);
 //                    Thread.sleep(5000);
-                    synchronized (this.rightFork) {
-                        this.takeRightFork(this.rightFork);
+                    synchronized (forkOrder[1]) {
+                        this.takeFork(forkOrder[1], takeOrder[1]);
                         this.eat();
                         this.putDownRightFork(this.rightFork);
                     }
@@ -56,12 +61,8 @@ public class Philosopher implements Runnable {
         System.out.println(this.getName() + " finished thinking!");
     }
 
-    public void takeLeftFork(final Fork fork) {
-        System.out.println(this.getName() + " has taken the left fork with id " + fork.getId());
-    }
-
-    public void takeRightFork(final Fork fork) {
-        System.out.println(this.getName() + " has taken the right fork with id " + fork.getId());
+    public void takeFork(final Fork fork, final String side) {
+        System.out.println(this.getName() + " has taken the " + side + " fork with id " + fork.getId());
     }
 
     public void eat() throws InterruptedException {
@@ -83,6 +84,13 @@ public class Philosopher implements Runnable {
      */
     public void stopRunning() {
         this.isRunning = false;
+    }
+
+    /**
+     * Whether the id of the philosopher is even.
+     */
+    private boolean isEven() {
+        return this.id % 2 == 0;
     }
 
     @Override
