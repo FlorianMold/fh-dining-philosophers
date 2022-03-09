@@ -29,6 +29,8 @@ public class Main {
         var scan = new Scanner(System.in);
         scan.nextLine();
 
+        System.out.println("Shutting down");
+
         for (var p : philosophers) {
             p.stopRunning();
         }
